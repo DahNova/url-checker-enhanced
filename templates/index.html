@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTTP Request URL Checker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center">URL Checker</h1>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <form id="urlForm" method="post">
+                    <div class="form-group">
+                        <label for="urls">Enter URLs (one per line):</label>
+                        <textarea class="form-control" id="urls" name="urls" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rate">Rate (Requests per minute):</label>
+                        <input type="number" class="form-control" id="rate" name="rate" min="1" value="30">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Check URLs</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <button id="abortBtn" class="btn btn-danger">Abort</button>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <h2>Results</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Status Code</th>
+                            <th>Final URL</th>
+                            <th>SSL Valid</th>
+                            <th scope="col">Redirect Chain</th>
+                            <th>Redirect Chain Length</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f8f8f8;
+  margin: 25px;
+  padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+  max-width: 80vw;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #222;
+  color: #fff;
+}
+
+body.dark-mode .container {
+  background-color: #222;
+  color: #fff;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.url-checker, .analytics {
+  flex: 1 0 400px;
+  margin: 10px;
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+      flex-direction: column;
+  }
+
+  .url-checker, .analytics {
+      flex: 1 0 auto;
+      margin: 5px;
+  }
+
+  body {
+      font-size: 18px;
+  }
+}
+
+.result-table {
+    /* Set width for the result table */
+    width: 100%; /* This will make the table take the full available width */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+textarea,
+input[type="number"],
+input[type="submit"],
+#abort-btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+input[type="submit"],
+#abort-btn {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+    max-width: 150px; /* Reduce the button width */
+}
+
+input[type="submit"]:hover,
+#abort-btn:hover {
+    background-color: #0056b3;
+}
+
+#abort-btn {
+    display: none;
+}
+
+#loading {
+    text-align: center;
+    color: #007bff;
+    display: none;
+    font-weight: bold;
+}
+
+#counter {
+    text-align: center;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+#results {
+    overflow-x: auto;
+    margin-bottom: 40px;
+}
+
+/* New styles for the table container */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%; /* Make the table cover the full width */
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.status-code-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    text-align: center;
+    width: 80px;
+}
+
+.status-code-200 {
+    background-color: #28a745; /* Green */
+    color: #fff;
+}
+
+.status-code-301 {
+    background-color: #ffc107; /* Yellow */
+}
+
+.status-code-404 {
+    background-color: #dc3545; /* Red */
+    color: #fff;
+}
+
+.analytics {
+    /* Set a fixed height for the Analytics section to align cards */
+    height: 270px;
+}
+
+.analytics-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.analytics-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.analytics-value {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.analytics-label {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Add styles for dark mode for the analytics cards */
+body.dark-mode .analytics-card {
+    background-color: #444;
+    color: #fff;
+  }
+
+  body.dark-mode .analytics-label {
+
+    color: #fff;
+  }
+  
+  /* Add styles for dark mode for the textarea */
+  body.dark-mode textarea,
+  body.dark-mode input[type="number"],
+  body.dark-mode input[type="submit"],
+  body.dark-mode #abort-btn {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #666;
+  }
+  
+  /* Add styles for dark mode switch */
+  .dark-mode-switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999; /* Ensure the switch is on top of other elements */
+  }
+  
+  .dark-mode-switch input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .dark-mode-switch label {
+    display: block;
+    width: 50px;
+    height: 30px;
+    border-radius: 25px;
+    background-color: #ccc;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .dark-mode-switch label:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+  }
+  
+  .dark-mode-switch input:checked + label {
+    background-color: #007bff;
+  }
+  
+  .dark-mode-switch input:checked + label:after {
+    transform: translateX(20px);
+  }
+  
+  /* Add styles for dark mode */
+  body.dark-mode {
+    background-color: #222;
+    color: #fff;
+  }
+
+/* Add styles for dark mode for the result table */
+body.dark-mode .result-table {
+    background-color: #444;
+    color: #fff;
+  }
+  
+  body.dark-mode table {
+    border-color: #666; /* Adjust border color for better visibility */
+  }
+  
+  /* Update the header row styles for dark mode */
+  body.dark-mode .result-table thead th {
+    background-color: #333;
+    color: #fff;
+  }
+
+  /* Aggiungi stili per la barra di progresso */
+.progress {
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  transition: width 0.3s ease;
+}
+
+/* Aggiungi stili per il messaggio di errore */
+#error-message {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
