@@ -29,6 +29,26 @@ socket.on('progress', function(data) {
         const redirectChainLenghtCell = document.createElement('td');
         redirectChainLenghtCell.textContent = result.redirect_chain || '0';
         tableRow.appendChild(redirectChainLenghtCell);
+        const robotsTxtCell = document.createElement('td');
+        robotsTxtCell.textContent = result.robots_txt_check;
+        tableRow.appendChild(robotsTxtCell);
+
+        const canonicalTagCell = document.createElement('td');
+        canonicalTagCell.textContent = result.canonical_tag;
+        tableRow.appendChild(canonicalTagCell);
+
+        const metaTitleCell = document.createElement('td');
+        metaTitleCell.textContent = result.meta_title;
+        tableRow.appendChild(metaTitleCell);
+
+        const metaDescCell = document.createElement('td');
+        metaDescCell.textContent = result.meta_description;
+        tableRow.appendChild(metaDescCell);
+
+        const hreflangsCell = document.createElement('td');
+        hreflangsCell.textContent = result.hreflangs.join(', ');
+        tableRow.appendChild(hreflangsCell);
+
 
         resultsElement.appendChild(tableRow);
     });

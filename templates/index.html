@@ -7,7 +7,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        th, td {
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -39,20 +44,27 @@
         <div class="row mt-4">
             <div class="col">
                 <h2>Results</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>URL</th>
-                            <th>Status Code</th>
-                            <th>Final URL</th>
-                            <th>SSL Valid</th>
-                            <th scope="col">Redirect Chain</th>
-                            <th>Redirect Chain Length</th>
-                        </tr>
-                    </thead>
-                    <tbody id="results">
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>Status Code</th>
+                                <th>Final URL</th>
+                                <th>SSL Valid</th>
+                                <th>Redirect Chain</th>
+                                <th>Redirect Chain Length</th>
+                                <th>Robots.txt</th>
+                                <th>Canonical Tag</th>
+                                <th>Meta Title</th>
+                                <th>Meta Description</th>
+                                <th>Hreflangs</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
