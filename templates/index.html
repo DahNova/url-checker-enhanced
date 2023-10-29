@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>HTTP Request URL Checker</title>
+    <!-- Collega il foglio di stile Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Collega la libreria jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Collega gli script Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Collega la libreria Socket.IO -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <!-- Definizione di stili personalizzati -->
     <style>
         th, td {
             white-space: nowrap;
@@ -16,37 +21,46 @@
 </head>
 <body>
     <div class="container mt-5">
+        <!-- Titolo -->
         <div class="row">
             <div class="col">
                 <h1 class="text-center">URL Checker</h1>
             </div>
         </div>
+        <!-- Form per l'inserimento degli URL -->
         <div class="row mt-4">
             <div class="col">
                 <form id="urlForm" method="post">
                     <div class="form-group">
                         <label for="urls">Enter URLs (one per line):</label>
+                        <!-- Area di testo per gli URL -->
                         <textarea class="form-control" id="urls" name="urls" rows="10"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="rate">Rate (Requests per minute):</label>
+                        <!-- Campo di input per il rate -->
                         <input type="number" class="form-control" id="rate" name="rate" min="1" value="30">
                     </div>
+                    <!-- Pulsante per avviare il controllo degli URL -->
                     <button type="submit" class="btn btn-primary">Check URLs</button>
                 </form>
             </div>
         </div>
+        <!-- Pulsante per interrompere l'elaborazione -->
         <div class="row mt-4">
             <div class="col">
                 <button id="abortBtn" class="btn btn-danger">Abort</button>
             </div>
         </div>
+        <!-- Risultati -->
         <div class="row mt-4">
             <div class="col">
                 <h2>Results</h2>
+                <!-- Tabella per visualizzare i risultati -->
                 <div class="table-responsive">
                     <table class="table table-bordered text-nowrap">
                         <thead>
+                            <!-- Intestazioni delle colonne -->
                             <tr>
                                 <th>URL</th>
                                 <th>Status Code</th>
@@ -61,6 +75,7 @@
                                 <th>Hreflangs</th>
                             </tr>
                         </thead>
+                        <!-- Contenuto della tabella -->
                         <tbody id="results">
                         </tbody>
                     </table>
@@ -68,6 +83,7 @@
             </div>
         </div>
     </div>
+    <!-- Collega lo script JavaScript -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

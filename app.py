@@ -3,18 +3,19 @@ from flask_socketio import SocketIO, emit
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
+import time
 
-# Initialize Flask app and SocketIO
+# Inizializza l'app Flask e SocketIO
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Initialize global variables
+# Inizializza le variabili globali
 total_urls = 0
 checked_urls = 0
 url_results = []
 abort_signal = False
 
-# Function to check robots.txt
+# Funzione per verificare robots.txt
 def check_robots_txt(url):
     parsed_url = urlparse(url)
     is_allowed = True
@@ -31,12 +32,12 @@ def check_robots_txt(url):
         pass
     return is_allowed
 
-# Function to check canonical tag
+# Funzione per controllare il tag canonical
 def check_canonical_tag(soup):
     canonical_tag = soup.find("link", {"rel": "canonical"})
     return canonical_tag["href"] if canonical_tag else None
 
-# Function to analyze meta tags (title and description)
+# Funzione per analizzare i meta tag (titolo e descrizione)
 def analyze_meta_tags(soup):
     title_tag = soup.find("title")
     meta_desc_tag = soup.find("meta", {"name": "description"})
@@ -44,7 +45,7 @@ def analyze_meta_tags(soup):
     meta_desc = meta_desc_tag["content"] if meta_desc_tag else None
     return title, meta_desc
 
-# Function to check hreflang tags
+# Funzione per controllare i tag hreflang
 def check_hreflang_tags(soup):
     hreflang_tags = soup.find_all("link", {"rel": "alternate", "hreflang": True})
     hreflangs = [tag["hreflang"] for tag in hreflang_tags]
@@ -82,50 +83,53 @@ def index():
                 result["redirect_chain_length"] = len(redirect_chain) if redirect_chain else '0'
                 result["ssl_valid"] = "Yes" if response.url.startswith("https") else "N/A"
 
-                # Robots.txt Verification
+                # Verifica robots.txt
                 result['robots_txt_check'] = check_robots_txt(url)
 
-                # Use response.text for BeautifulSoup
+                # Usa response.text per BeautifulSoup
                 soup = BeautifulSoup(response.text, 'html.parser')
 
-                # Canonical Tag Check
+                # Controlla il tag canonical
                 result['canonical_tag'] = check_canonical_tag(soup)
 
-                # Meta Tag Analysis
+                # Analizza i meta tag
                 title, meta_desc = analyze_meta_tags(soup)
                 result['meta_title'] = title
                 result['meta_description'] = meta_desc
 
-                # Hreflang Tag Check
+                # Controlla i tag hreflang
                 result['hreflangs'] = check_hreflang_tags(soup)
 
-                # Add result to url_results
+                # Aggiungi il risultato a url_results
                 url_results.append(result)
+
+                # Emetti il risultato per questa URL
+                socketio.emit('progress', {'results': [result]})
+
+                # Aggiungi una pausa qui per impostare un timeout (in secondi)
+                time.sleep(60 / int(rate))  # 60 secondi al minuto, diviso per il rate per una richiesta al minuto
+
 
             except requests.exceptions.SSLError:
                 result["status_code"] = "Error"
                 result["final_url"] = "Error"
                 result["ssl_valid"] = "No"
             except Exception as e:
-                app.logger.error(f"Exception occurred: {e}")
+                app.logger.error(f"Si è verificata un'eccezione: {e}")
                 result["status_code"] = "Error"
                 result["final_url"] = "Error"
-                result["ssl_valid"] = "Can't Check"
+                result["ssl_valid"] = "Impossibile Verificare"
 
-
-
-    #    url_results.append(result)
-        socketio.emit('progress', {'results': url_results})
-        
-        return jsonify({"message": "Processing URLs", "results": url_results})
+        return jsonify({"message": "Elaborazione degli URL", "results": url_results})
 
     return render_template("index.html")
+
 
 @app.route("/abort", methods=["POST"])
 def abort_process():
     global abort_signal
     abort_signal = True
-    return jsonify({"message": "Aborted"})
+    return jsonify({"message": "Abortito"})
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
