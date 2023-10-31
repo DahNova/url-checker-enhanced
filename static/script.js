@@ -1,6 +1,54 @@
 // Connette il socket al server
 const socket = io.connect('http://' + document.domain + ':' + location.port);
 
+// When the user clicks the 'Check URLs' button
+document.getElementById('checkButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Show loading state
+    const alertContainer = document.getElementById('alertContainer');
+    alertContainer.innerHTML = '<div class="alert alert-info" role="alert">Checking URLs...</div>';
+    
+    // Create an object FormData with the form data
+    const formData = new FormData(urlForm);
+    // Send a POST request to the server with the form data
+    fetch('/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Log the response from the server
+        console.log(data);
+
+        // Hide loading state
+        alertContainer.innerHTML = '';
+
+        // Add visual feedback for successful check
+        alertContainer.innerHTML = '<div class="alert alert-success" role="alert">URLs checked successfully.</div>';
+        setTimeout(() => {
+            alertContainer.innerHTML = ''; // Clear the feedback after a few seconds
+        }, 3000); // Adjust the timeout duration as needed
+
+        // Per ogni risultato nel dato ricevuto
+        const resultsElement = document.getElementById('results');
+        data.results.forEach(result => {
+            const tableRow = document.createElement('tr');
+            // ... (rest of your code for creating table rows)
+            resultsElement.appendChild(tableRow); 
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+
+        // Hide loading state
+        alertContainer.innerHTML = '';
+
+        // Add visual feedback for error
+        alertContainer.innerHTML = '<div class="alert alert-danger" role="alert">Error checking URLs. Please try again.</div>';
+    });
+});
+
 // Quando riceve un evento 'progress' dal server
 socket.on('progress', function(data) {
     const resultsElement = document.getElementById('results');
@@ -65,35 +113,5 @@ socket.on('progress', function(data) {
 
         // Aggiunge la riga alla tabella dei risultati
         resultsElement.appendChild(tableRow); 
-    });
-});
-
-// Quando il documento è completamente caricato
-document.addEventListener('DOMContentLoaded', function() {
-    // Aggiunge un evento di ascolto al form di URL
-    const urlForm = document.getElementById('urlForm');
-    urlForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Crea un oggetto FormData con i dati del form
-        const formData = new FormData(urlForm);
-        // Esegue una richiesta POST al server con i dati del form
-        fetch('/', {
-            method: 'POST',
-            body: formData
-        }).then(response => response.json()).then(data => {
-            // Logga la risposta dal server
-            console.log(data);
-        });
-    });
-
-    // Aggiunge un evento di ascolto al pulsante di aborto
-    const abortBtn = document.getElementById('abortBtn');
-    abortBtn.addEventListener('click', function() {
-        // Emite un evento 'abort' al server via socket
-        socket.emit('abort', {});
-        // Esegue una richiesta POST per abortire il processo
-        fetch('/abort', {
-            method: 'POST'
-        }).then(response => response.json()).then(data => console.log(data));
     });
 });
